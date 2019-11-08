@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hellotrident
+spec:
+  initContainers:
+  - name: hellotridentwriter
+    image: busybox
+    command: ['sh', '-c', 'touch /data/HelloTrident']
+    volumeMounts:
+      - name: nfs-persistent-storage
+        mountPath: /data
+  volumes:
+    - name: nfs-persistent-storage
+      persistentVolumeClaim:
+        claimName: nfs-pvc
+  restartPolicy: Never
+  containers:
+  - name: hellotridentreader
+    image: busybox
+    command: ['sh', '-c', 'ls -l /data/HelloTrident']
+    volumeMounts:
+      - name: nfs-persistent-storage
+        mountPath: /data
+  volumes:
+    - name: nfs-persistent-storage
+      persistentVolumeClaim:
+        claimName: nfs-pvc
+  restartPolicy: Never
