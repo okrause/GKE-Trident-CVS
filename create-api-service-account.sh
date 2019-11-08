@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: Error checking. Typical problem: role binding fails due to missing permissions
 
 if [ "$CLOUD_SHELL" != true ]; then
     echo "Please run from Google Cloud Shell."
