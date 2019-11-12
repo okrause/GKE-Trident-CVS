@@ -66,7 +66,7 @@ The following instructions will assist in building a proper backend configuratio
     ```
 1. For later use, record GCP project number:
     ```bash
-    PROJECT_NUMBER=12345678
+    PROJECT_NUMBER=<your_project_number>
     # or, if run from CloudShell
     PROJECT_NUMBER=$(gcloud projects list --filter="$DEVSHELL_PROJECT_ID" --format="value(PROJECT_NUMBER)")
     # or, if run on a GKE worker node
