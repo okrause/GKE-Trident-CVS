@@ -1,76 +1,78 @@
 {
-  "version": 1,
-  "storageDriverName": "gcp-cvs",
-  "projectNumber": $projectNumber,
-  "apiRegion": $gcpRegion,
-  "apiKey": $apiKey,
+    "version": 1,
+    "storageDriverName": "gcp-cvs",
+    "projectNumber": $projectNumber,
+    "apiRegion": $gcpRegion,
+    "apiKey": $apiKey,
 
-  "nfsMountOptions": "vers=3,proto=tcp,timeo=600",
+    "nfsMountOptions": "vers=3,proto=tcp,timeo=600",
 
-  "defaults": {
-    "exportRule": "0.0.0.0/0",
-    "size": "1Ti"
-  },
+    "defaults": {
+        "exportRule": "0.0.0.0/0",
+        "size": "1Ti"
+    },
 
-  "labels": {"cloud": "gcp"},
-  "region": $gcpRegion,
+    "labels": {
+        "cloud": "gcp"
+    },
+    "region": $gcpRegion,
 
-  "storage": [
-    {
-        "labels": {
-            "performance": "extreme",
-            "protection": "extra"
+    "storage": [
+        {
+            "labels": {
+                "performance": "extreme",
+                "protection": "extra"
+            },
+            "serviceLevel": "extreme",
+            "defaults": {
+                "snapshotDir": "true",
+                "snapshotReserve": "10"
+            }
         },
-        "serviceLevel": "extreme",
-        "defaults": {
-            "snapshotDir": "true",
-            "snapshotReserve": "10"
+        {
+            "labels": {
+                "performance": "extreme",
+                "protection": "standard"
+            },
+            "serviceLevel": "extreme"
+        },
+
+        {
+            "labels": {
+                "performance": "premium",
+                "protection": "extra"
+            },
+            "serviceLevel": "premium",
+            "defaults": {
+                "snapshotDir": "true",
+                "snapshotReserve": "10"
+            }
+        },
+        {
+            "labels": {
+                "performance": "premium",
+                "protection": "standard"
+            },
+            "serviceLevel": "premium"
+        },
+
+        {
+            "labels": {
+                "performance": "standard",
+                "protection": "extra"
+            },
+            "serviceLevel": "standard",
+            "defaults": {
+                "snapshotDir": "true",
+                "snapshotReserve": "10"
+            }
+        },
+        {
+            "labels": {
+                "performance": "standard",
+                "protection": "standard"
+            },
+            "serviceLevel": "standard"
         }
-    },
-    {
-        "labels": {
-            "performance": "extreme",
-            "protection": "standard"
-        },
-        "serviceLevel": "extreme"
-    },
-
-    {
-        "labels": {
-            "performance": "premium",
-            "protection": "extra"
-        },
-        "serviceLevel": "premium",
-        "defaults": {
-            "snapshotDir": "true",
-            "snapshotReserve": "10"
-        }
-    },
-    {
-        "labels": {
-            "performance": "premium",
-            "protection": "standard"
-        },
-        "serviceLevel": "premium"
-    },
-
-    {
-      "labels": {
-          "performance": "standard",
-          "protection": "extra"
-      },
-      "serviceLevel": "standard",
-      "defaults": {
-          "snapshotDir": "true",
-          "snapshotReserve": "10"
-      }
-  },
-  {
-      "labels": {
-          "performance": "standard",
-          "protection": "standard"
-      },
-      "serviceLevel": "standard"
-  }
-]
+    ]
 }

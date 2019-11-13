@@ -1,6 +1,6 @@
 # Using NetApp Cloud Volumes Services (CVS) on GCP for Google Kubernetes Engine (GKE) with NetApp Trident as CSI provisioner
 
-Quick recipe to use NetApp [Cloud Volumes Service CVS on GCP](https://cloud.netapp.com/cloud-volumes-service-for-gcp) as reliable NFS persistent volumes (PV) in [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/), using Netapps Open Source CSI provisioner [Trident](https://github.com/NetApp/trident).
+Quick recipe to use NetApp [Cloud Volumes Service CVS on GCP](https://cloud.netapp.com/cloud-volumes-service-for-gcp) as reliable NFS persistent volumes (PV) on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/), using Netapps Open Source CSI provisioner [Trident](https://github.com/NetApp/trident).
 
 ## Features
 Using Cloud Volumes Service via Trident with GKE provides:
@@ -98,7 +98,7 @@ The following instructions will assist in building a proper backend configuratio
     ```
     This will create 6 new storage classes: 
     ```bash
-    # kubectl get storageclasses
+    $ kubectl get storageclasses
     NAME                              PROVISIONER             AGE
     cvs-extreme                       csi.trident.netapp.io   4h37m
     cvs-extreme-extra-protection      csi.trident.netapp.io   4h37m
