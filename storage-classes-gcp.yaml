@@ -4,7 +4,7 @@ metadata:
   name: cvs-extreme
 provisioner: netapp.io/trident
 parameters:
-  selector: "performance=premium; protection=standard"
+  selector: "performance=extreme; protection=standard"
 allowVolumeExpansion: true
 ---
 apiVersion: storage.k8s.io/v1
