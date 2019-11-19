@@ -82,18 +82,18 @@ The following instructions will assist in building a proper backend configuratio
     ```
     You may want to modify export policy (default 0.0.0.0/0), snap reserve size (default 10%) and proxy settings (default: none) in backend.json. Examples on how the file might look like are [here](https://netapp-trident.readthedocs.io/en/latest/kubernetes/operations/tasks/backends/cvs_gcp.html).
 
-1. Deploy backend configuration to Trident
+1. Deploy backend configuration to Trident and create storageclasses
     ```bash
     cp backend.json $TRIDENT_DIR
     cp storage-classes-gcp.yaml $TRIDENT_DIR
+    pushd .
     cd $TRIDENT_DIR
     ./tridentctl -n trident create backend -f backend.json
 
     # check for errors
     ./tridentctl -n trident logs
-    ```
-1. Create new storage classes
-    ```bash
+
+    # Create new storageclasses for Trident
     kubectl apply -f storage-classes-gcp.yaml
     ```
     This will create 6 new storage classes: 
@@ -119,6 +119,7 @@ The following instructions will assist in building a proper backend configuratio
 ### Verify PVC creation and accessibility
 1. Check if trident can deploy a PV for an PVC successfully:
     ```bash
+    popd
     kubectl apply -f nfs-pvc.yaml
     kubectl get pvc nfs-pvc --watch
     ```
@@ -129,7 +130,7 @@ The following instructions will assist in building a proper backend configuratio
     The following will deploy one pod with two containers. The first container creates a file "HelloTrident" on the RWX PV, the second does an "ls -l" on the PV.
     ```bash
     kubectl apply -f hello-trident.yaml
-    kubectl logs pod hellotrident
+    kubectl logs hellotrident
     # output should look like
     # -rw-r--r--    1 root     root             0 Nov  8 12:46 /data/HelloTrident
     ``` 
