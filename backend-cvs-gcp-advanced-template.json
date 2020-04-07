@@ -2,6 +2,7 @@
     "version": 1,
     "storageDriverName": "gcp-cvs",
     "projectNumber": $projectNumber,
+    "network": $network,
     "apiRegion": $gcpRegion,
     "apiKey": $apiKey,
 

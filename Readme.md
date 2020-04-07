@@ -54,7 +54,9 @@ The following instructions will assist in building a proper backend configuratio
 1. Clone this repository and cd into it
 1. Create GCP service account to access CVS API and generate a JSON keyfile.
 
-   See https://cloud.google.com/solutions/partners/netapp-cloud-volumes/how-to#cloud_volumes_apis. Alternatively use the provided script to create the account. Run from Cloud Shell:
+   See https://cloud.google.com/solutions/partners/netapp-cloud-volumes/api. Here is a video which shows the steps: https://www.youtube.com/watch?v=x-fiw1t3Y4o
+   
+   Alternatively use the provided script to create the account. Run from Cloud Shell:
 
     ```bash
     source ./create-api-service-account.sh
@@ -72,13 +74,22 @@ The following instructions will assist in building a proper backend configuratio
     # or, if run on a GKE worker node
     PROJECT_NUMBER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/project/numeric-project-id" -H "Metadata-Flavor: Google")
     ```
+1. Specify VPC the CVS service is connected/peered to:
+    ```bash
+    # If you are unsure, use
+    # gcloud compute networks peerings list
+    # to identify the correct VPC. Look for a line where PEER_NETWORK=netapp-tenant-vpc and
+    # put that lines NETWORK below
+    # gcpNetwork=$(gcloud compute networks peerings list | awk '/netapp-tenant-vpc/ {print $2}')
+    gcpNetwork="default"
+    ```
 1. Set GCP region where you want to store your PVs (CVS volumes):
     ```bash
     gcpRegion="europe-west3"
     ```
 1. Generate Trident backend configuration. This can all be done manually by editing file the [backend template](./backend-cvs-gcp-advanced-template.json) or programmatically by running:
     ```bash
-    jq -n --argjson apiKey "$(cat $CVS_KEYFILE)" --arg projectNumber "$PROJECT_NUMBER" --arg gcpRegion "$gcpRegion" -f backend-cvs-gcp-advanced-template.json > backend.json
+    jq -n --argjson apiKey "$(cat $CVS_KEYFILE)" --arg projectNumber "$PROJECT_NUMBER" --arg gcpRegion "$gcpRegion" --arg network "$gcpNetwork" -f backend-cvs-gcp-advanced-template.json > backend.json
     ```
     You may want to modify export policy (default 0.0.0.0/0), snap reserve size (default 10%) and proxy settings (default: none) in backend.json. Examples on how the file might look like are [here](https://netapp-trident.readthedocs.io/en/latest/kubernetes/operations/tasks/backends/cvs_gcp.html).
 
@@ -142,5 +153,7 @@ The following instructions will assist in building a proper backend configuratio
 
 Congratulations, it works!
 
-Next step: [Learn how to do snapshots and create instant clones.](https://netapp.io/2019/06/28/on-demand-snapshots-with-csi-trident/).
+Next step:
+* [Learn how to do snapshots and create instant clones.](https://netapp.io/2019/06/28/on-demand-snapshots-with-csi-trident/)
+* For Trident 20.01 or later, see notes on [CSI Alpha vs CSI Beta snapshots](https://netapp.io/2020/01/30/alpha-to-beta-snapshots/)
 
