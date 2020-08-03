@@ -41,7 +41,7 @@ Assumption:
 * Likely the easiest way is to do the installation from Cloud Shell
 
 ### Install Trident
-Follow instructions [installation instructions](https://netapp-trident.readthedocs.io/en/latest/kubernetes/deploying.html) until you reach step "Create and verify your first backend".
+Follow instructions [installation instructions](https://netapp-trident.readthedocs.io/en/latest/kubernetes/deploying.html) until you reach step "Create a Trident backend".
 
 To make the following steps easier, record the trident-installer directory:
 ```bash
@@ -74,13 +74,15 @@ The following instructions will assist in building a proper backend configuratio
     # or, if run on a GKE worker node
     PROJECT_NUMBER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/project/numeric-project-id" -H "Metadata-Flavor: Google")
     ```
+    If you are using a shared VPC use the PROJECT_NUMBER of your *hosting project* !
 1. Specify VPC the CVS service is connected/peered to:
     ```bash
     # If you are unsure, use
     # gcloud compute networks peerings list
     # to identify the correct VPC. Look for a line where PEER_NETWORK=netapp-tenant-vpc and
     # put that lines NETWORK below
-    # gcpNetwork=$(gcloud compute networks peerings list | awk '/netapp-tenant-vpc/ {print $2}')
+    gcpNetwork=$(gcloud compute networks peerings list | awk '/netapp-tenant-vpc/ {print $2}')
+    # if you are using "default" VPC
     gcpNetwork="default"
     ```
 1. Set GCP region where you want to store your PVs (CVS volumes):
@@ -141,6 +143,7 @@ The following instructions will assist in building a proper backend configuratio
     The following will deploy one pod with two containers. The first container creates a file "HelloTrident" on the RWX PV, the second does an "ls -l" on the PV.
     ```bash
     kubectl apply -f hello-trident.yaml
+    # Wait until pod is deployed
     kubectl logs hellotrident
     # output should look like
     # -rw-r--r--    1 root     root             0 Nov  8 12:46 /data/HelloTrident
@@ -157,3 +160,8 @@ Next step:
 * [Learn how to do snapshots and create instant clones.](https://netapp.io/2019/06/28/on-demand-snapshots-with-csi-trident/)
 * For Trident 20.01 or later, see notes on [CSI Alpha vs CSI Beta snapshots](https://netapp.io/2020/01/30/alpha-to-beta-snapshots/)
 
+## Support
+This is intended as a recipe to simplify Trident installation on GCP. If you run into problems, you might want to check the [Documentation](https://netapp-trident.readthedocs.io/en/latest/). It is the authorative source for installation instructions. It also got an section on how to get official support from NetApp.
+
+## Changelog
+* 2020-08-03: Tested procedure successfully with GKE 1.16.11 and Trident 20.07 (old tridentctl installation method)
